@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorldQuant Alpha 状态流转图</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>WorldQuant Alpha 状态流转图</h1>
+        </header>
+
+        <div id="loading-message">正在加载数据...</div>
+        <div id="error-message" style="display: none;"></div>
+
+        <div id="flowchart-container" style="display: none;">
+            <!-- SVG容器用于绘制连接线 -->
+            <svg id="connections-container" class="connections-layer">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#95a5a6" />
+                    </marker>
+                </defs>
+            </svg>
+
+            <!-- 状态节点 -->
+            <div class="flowchart">
+                <!-- 第一行 -->
+                <div class="row">
+                    <div class="node-wrapper">
+                        <div class="node initial-state" id="node-initial">
+                            <div class="node-title">无状态</div>
+                            <div class="node-subtitle">Initial</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第二行 -->
+                <div class="row">
+                    <div class="node-wrapper">
+                        <div class="node final-state status-common" id="node-common">
+                            <div class="node-title">通用</div>
+                            <div class="node-subtitle">Common</div>
+                            <div class="node-count" id="count-common">0</div>
+                        </div>
+                    </div>
+                    <div class="node-wrapper">
+                        <div class="node process-state" id="node-to_check">
+                            <div class="node-title">待检查</div>
+                            <div class="node-subtitle">To Check</div>
+                            <div class="node-count" id="count-to_check">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第三行 -->
+                <div class="row">
+                    <div class="node-wrapper empty"></div>
+                    <div class="node-wrapper">
+                        <div class="node final-state status-failed" id="node-check_failed">
+                            <div class="node-title">检查失败</div>
+                            <div class="node-subtitle">Check Failed</div>
+                            <div class="node-count" id="count-check_failed">0</div>
+                        </div>
+                    </div>
+                    <div class="node-wrapper">
+                        <div class="node process-state" id="node-to_submit">
+                            <div class="node-title">待提交</div>
+                            <div class="node-subtitle">To Submit</div>
+                            <div class="node-count" id="count-to_submit">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第四行 -->
+                <div class="row">
+                    <div class="node-wrapper empty"></div>
+                    <div class="node-wrapper empty"></div>
+                    <div class="node-wrapper">
+                        <div class="node final-state status-failed" id="node-submit_failed">
+                            <div class="node-title">提交失败</div>
+                            <div class="node-subtitle">Submit Failed</div>
+                            <div class="node-count" id="count-submit_failed">0</div>
+                        </div>
+                    </div>
+                    <div class="node-wrapper">
+                        <div class="node final-state status-submitted" id="node-submitted">
+                            <div class="node-title">已提交</div>
+                            <div class="node-subtitle">Submitted</div>
+                            <div class="node-count" id="count-submitted">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><span class="legend-color initial"></span>初始状态</div>
+            <div class="legend-item"><span class="legend-color process"></span>过程状态</div>
+            <div class="legend-item"><span class="legend-color final-common"></span>最终状态 - 通用</div>
+            <div class="legend-item"><span class="legend-color final-failed"></span>最终状态 - 失败</div>
+            <div class="legend-item"><span class="legend-color final-submitted"></span>最终状态 - 已提交</div>
+        </div>
+
+        <div class="flow-explanation">
+            <h3>状态流转说明</h3>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>初始检查：</strong>Alpha 开始时处于无状态，经过检查后分为通用状态或待检查状态
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>检查流程：</strong>待检查的 Alpha 经过检查后，若检查失败则终止，若检查成功则进入待提交状态
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>提交流程：</strong>待提交的 Alpha 经过提交后，根据结果进入提交失败或已提交最终状态
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

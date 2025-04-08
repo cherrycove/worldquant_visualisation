@@ -1,0 +1,652 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* 加载和错误消息 */
+#loading-message,
+#error-message {
+    text-align: center;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+#loading-message {
+    background-color: #e9f5fe;
+    color: #3498db;
+}
+
+#error-message {
+    background-color: #fee9e9;
+    color: #e74c3c;
+}
+
+/* 流程图容器 */
+#flowchart-container {
+    position: relative;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px 30px 60px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    min-height: 550px;
+    overflow: visible;
+}
+
+.flowchart {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+/* 行布局 */
+.row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 80px;
+    position: relative;
+}
+
+/* 节点容器 */
+.node-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 200px;
+    position: relative;
+}
+
+.node-wrapper.empty {
+    visibility: hidden;
+}
+
+/* 节点样式 */
+.node {
+    width: 160px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+}
+
+.node:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.node-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.node-subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.node-count {
+    font-size: 22px;
+    font-weight: 700;
+    padding-top: 5px;
+}
+
+/* 节点类型样式 */
+.initial-state {
+    border: 2px solid #95a5a6;
+}
+
+.process-state {
+    border-left: 5px solid #3498db;
+    border-top: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.process-state .node-count {
+    color: #3498db;
+}
+
+.final-state {
+    border-top: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.status-common {
+    border-left: 5px solid #1abc9c;
+}
+
+.status-common .node-count {
+    color: #1abc9c;
+}
+
+.status-failed {
+    border-left: 5px solid #e74c3c;
+}
+
+.status-failed .node-count {
+    color: #e74c3c;
+}
+
+.status-submitted {
+    border-left: 5px solid #2ecc71;
+}
+
+.status-submitted .node-count {
+    color: #2ecc71;
+}
+
+/* 连接线容器 */
+.connection-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* 连接线样式 */
+.connection {
+    position: absolute;
+    z-index: 1;
+}
+
+/* 每个连接线的定位 */
+#connection-initial-common {
+    top: 95px;
+    left: 400px;
+    width: 120px;
+    height: 100px;
+}
+
+#connection-initial-to_check {
+    top: 95px;
+    left: 480px;
+    width: 120px;
+    height: 100px;
+}
+
+#connection-to_check-check_failed {
+    top: 210px;
+    left: 550px;
+    width: 120px;
+    height: 100px;
+}
+
+#connection-to_check-to_submit {
+    top: 210px;
+    left: 630px;
+    width: 120px;
+    height: 100px;
+}
+
+#connection-to_submit-submit_failed {
+    top: 330px;
+    left: 550px;
+    width: 120px;
+    height: 100px;
+}
+
+#connection-to_submit-submitted {
+    top: 330px;
+    left: 630px;
+    width: 120px;
+    height: 100px;
+}
+
+/* 连接线实际线条 */
+.connection-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #95a5a6;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.connection-line:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid #95a5a6;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+}
+
+/* 带角度的连接线 */
+.connection-line.down-left {
+    width: 150px;
+    transform: rotate(-30deg);
+    transform-origin: 0 0;
+}
+
+.connection-line.down-right {
+    width: 150px;
+    transform: rotate(30deg);
+    transform-origin: 0 0;
+}
+
+/* 连接线标签 */
+.connection-label {
+    position: absolute;
+    font-size: 12px;
+    fill: #666;
+    pointer-events: all;
+    transition: all 0.3s ease;
+    user-select: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    dominant-baseline: middle;
+    text-anchor: middle;
+}
+
+.connection-active .connection-line,
+.connection:hover .connection-line {
+    background-color: #3498db;
+    height: 3px;
+    box-shadow: 0 0 4px rgba(52, 152, 219, 0.5);
+}
+
+.connection-active .connection-line:after,
+.connection:hover .connection-line:after {
+    border-left-color: #3498db;
+}
+
+.connection-active .connection-label,
+.connection:hover .connection-label {
+    color: #3498db;
+    font-weight: 600;
+}
+
+/* 图例 */
+.legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    border-radius: 3px;
+}
+
+.legend-color.initial {
+    background-color: #95a5a6;
+}
+
+.legend-color.process {
+    background-color: #3498db;
+}
+
+.legend-color.final-common {
+    background-color: #1abc9c;
+}
+
+.legend-color.final-failed {
+    background-color: #e74c3c;
+}
+
+.legend-color.final-submitted {
+    background-color: #2ecc71;
+}
+
+/* 流程说明部分 */
+.flow-explanation {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.flow-explanation h3 {
+    color: #2c3e50;
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.flow-step {
+    display: flex;
+    align-items: flex-start;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content strong {
+    color: #2c3e50;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    #flowchart-container {
+        padding: 15px;
+        overflow-x: auto;
+    }
+
+    .flowchart {
+        min-width: 700px;
+    }
+
+    .node {
+        width: 140px;
+        padding: 12px;
+    }
+
+    .node-title {
+        font-size: 14px;
+    }
+
+    .node-subtitle {
+        font-size: 12px;
+    }
+
+    .node-count {
+        font-size: 18px;
+    }
+
+    .legend {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .flow-explanation h3 {
+        font-size: 18px;
+    }
+
+    .flow-step {
+        padding: 12px;
+    }
+
+    .step-number {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .flowchart {
+        min-width: 800px;
+    }
+
+    .flow-explanation {
+        padding: 15px;
+    }
+}
+
+/* 流程箭头 */
+.flow-arrow {
+    position: absolute;
+    border: 2px solid #95a5a6;
+    border-width: 0 0 2px 2px;
+    width: 130px;
+    height: 70px;
+    z-index: 1;
+    pointer-events: all;
+    border-radius: 0 0 0 50px;
+    transition: all 0.3s ease;
+}
+
+.flow-arrow:after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-width: 0 0 2px 2px;
+    border-style: solid;
+    border-color: #95a5a6;
+    right: -5px;
+    bottom: -6px;
+    transform: rotate(-45deg);
+    transition: all 0.3s ease;
+}
+
+/* 使用class来控制方向 */
+.arrow-down-left {
+    transform: rotate(225deg);
+    left: 34%;
+    top: 135px;
+}
+
+.arrow-down-right {
+    transform: rotate(135deg);
+    right: 34%;
+    top: 135px;
+}
+
+.arrow-to-failed {
+    transform: rotate(225deg);
+    left: 44%;
+    top: 270px;
+}
+
+.arrow-to-submit {
+    transform: rotate(135deg);
+    right: 29%;
+    top: 270px;
+}
+
+.arrow-to-submit-failed {
+    transform: rotate(225deg);
+    left: 49%;
+    top: 410px;
+}
+
+.arrow-to-submitted {
+    transform: rotate(135deg);
+    right: 26%;
+    top: 410px;
+}
+
+/* 箭头标签 */
+.arrow-label {
+    position: absolute;
+    font-size: 12px;
+    color: #666;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 4;
+    pointer-events: all;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 箭头的悬停和活跃状态 */
+.flow-arrow:hover,
+.flow-arrow.active {
+    border-color: #3498db;
+    border-width: 0 0 3px 3px;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+.flow-arrow:hover:after,
+.flow-arrow.active:after {
+    border-color: #3498db;
+    border-width: 0 0 3px 3px;
+}
+
+.arrow-label:hover,
+.arrow-label.active {
+    color: #3498db;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2);
+}
+
+/* 箭头标签位置 */
+.label-down-left {
+    left: 29%;
+    top: 130px;
+}
+
+.label-down-right {
+    right: 29%;
+    top: 130px;
+}
+
+.label-to-failed {
+    left: 37%;
+    top: 265px;
+}
+
+.label-to-submit {
+    right: 25%;
+    top: 265px;
+}
+
+.label-to-submit-failed {
+    left: 41%;
+    top: 405px;
+}
+
+.label-to-submitted {
+    right: 22%;
+    top: 405px;
+}
+
+/* SVG连接线样式 */
+.connections-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible;
+}
+
+.connection-path {
+    fill: none;
+    stroke: #95a5a6;
+    stroke-width: 2;
+    transition: all 0.3s ease;
+    marker-end: url(#arrowhead);
+}
+
+.connection-path:hover {
+    stroke: #3498db;
+    stroke-width: 3;
+}
+
+.connection-label:hover {
+    fill: #3498db;
+    font-weight: 600;
+}
+
+.connection-label-bg {
+    fill: rgba(255, 255, 255, 0.98);
+    stroke: rgba(0, 0, 0, 0.05);
+    stroke-width: 1;
+    pointer-events: all;
+    transition: all 0.3s ease;
+    rx: 4;
+    ry: 4;
+}
+
+.connection-label-bg:hover {
+    fill: rgba(255, 255, 255, 1);
+    stroke: #3498db;
+    stroke-width: 1.5;
+}
