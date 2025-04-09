@@ -19,7 +19,7 @@ async function fetchAlphaCounts() {
 
     try {
         // 从实际API获取数据
-        const response = await fetch('http://106.52.178.188:8000/api/alpha/status/count');
+        const response = await fetch('https://www.cherrybless.shop/api/alpha/status/count');
         const data = await response.json();
 
         // 确保数据格式正确
