@@ -18,27 +18,13 @@ async function fetchAlphaCounts() {
     flowchartContainer.style.display = 'none';
 
     try {
-        // 模拟API请求延迟
-        await new Promise(resolve => setTimeout(resolve, 800));
+        // 从实际API获取数据
+        const response = await fetch('http://106.52.178.188:8000/api/alpha/status/count');
+        const data = await response.json();
 
-        // 模拟从API获取数据
-        // 实际项目中，这里应该替换为真实的API请求
-        // 例如: const response = await fetch('/api/alpha-status');
-        //       const data = await response.json();
-        const mockData = {
-            success: true,
-            data: {
-                common: 15,
-                to_check: 8,
-                check_failed: 3,
-                to_submit: 5,
-                submit_failed: 1,
-                submitted: 22
-            }
-        };
-
-        if (mockData.success) {
-            updateUI(mockData.data);
+        // 确保数据格式正确
+        if (data) {
+            updateUI(data);
             flowchartContainer.style.display = 'block';
 
             // 添加简单的动画效果
@@ -47,13 +33,12 @@ async function fetchAlphaCounts() {
             // 在数据加载完成后调用绘制函数
             showFlowchart();
         } else {
-            throw new Error(mockData.message || '获取Alpha状态数据失败');
+            throw new Error('获取Alpha状态数据失败：数据格式不正确');
         }
-
     } catch (error) {
-        console.error("获取Alpha状态数据时出错:", error);
-        errorMessage.textContent = `加载数据失败：${error.message}`;
-        errorMessage.style.display = 'block';
+        console.error('获取Alpha状态数据时出错:', error);
+        // 显示错误信息给用户
+        displayErrorMessage('获取Alpha状态数据失败，请稍后重试');
     } finally {
         loadingMessage.style.display = 'none';
     }
