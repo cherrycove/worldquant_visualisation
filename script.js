@@ -254,18 +254,27 @@ class ConnectionManager {
     }
 
     updateConnection(connection) {
-        const fromRect = connection.from.getBoundingClientRect();
-        const toRect = connection.to.getBoundingClientRect();
+        const sourceElement = document.getElementById(connection.sourceId);
+        const targetElement = document.getElementById(connection.targetId);
+
+        // 添加空值检查
+        if (!sourceElement || !targetElement) {
+            console.warn(`连接元素未找到: sourceId=${connection.sourceId}, targetId=${connection.targetId}`);
+            return; // 提前返回，不再继续处理
+        }
+
+        const sourceRect = sourceElement.getBoundingClientRect();
+        const targetRect = targetElement.getBoundingClientRect();
 
         // 计算连接线的起点和终点
         const start = {
-            x: fromRect.left + fromRect.width / 2,
-            y: fromRect.top + fromRect.height / 2
+            x: sourceRect.left + sourceRect.width / 2,
+            y: sourceRect.top + sourceRect.height / 2
         };
 
         const end = {
-            x: toRect.left + toRect.width / 2,
-            y: toRect.top + toRect.height / 2
+            x: targetRect.left + targetRect.width / 2,
+            y: targetRect.top + targetRect.height / 2
         };
 
         // 创建贝塞尔曲线路径
@@ -462,12 +471,11 @@ window.addEventListener('resize', () => {
  */
 function showFlowchart() {
     const flowchartContainer = document.getElementById('flowchart-container');
-
-    // 确保流程图容器可见
     flowchartContainer.style.display = 'block';
 
-    // 添加一个小延迟以确保DOM完全渲染
+    // 增加延迟，确保DOM元素已经渲染
     setTimeout(() => {
+        const connectionManager = new ConnectionManager();
         // 绘制连接线
         drawConnections();
 
